@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For My Sunshine 💙</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #F5F8FA, #BDE7FC,#6CA7F5 );
+    color: #4F5661;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Floating hearts */
+  .heart {
+    position: absolute;
+    font-size: 18px;
+    color: #ef9fae;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
+  .page {
+    display: none;
+    text-align: center;
+    max-width: 350px;
+    padding: 30px;
+    animation: fade 0.8s ease;
+    z-index: 1;
+    position: relative;
+  }
+
+  .page.active { display: block; }
+
+  h1 { margin-bottom: 10px; }
+  p { font-size: 15px; line-height: 1.7; opacity: 0.95; min-height: 80px; }
+
+  /* Glass button style */
+  button {
+    margin-top: 25px;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 25px;
+    background: rgba(255,255,255,0.1);
+    color: #4F5661;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 15px rgba(255, 77, 109,0.5);
+  }
+  button:hover { 
+    transform: scale(1.05); 
+    background: rgba(255,77,109,0.2); 
+    box-shadow: 0 0 25px rgba(255,77,109,0.8);
+  }
+
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div id="hearts"></div>
+
+<!-- Pages -->
+<div class="page active" id="page1">
+  <h1 id="p1-title"></h1>
+  <p id="p1-text"></p>
+  <button onclick="nextPage(2)">touch me 🤍</button>
+</div>
+
+<div class="page" id="page2">
+  <h1 id="p2-title"></h1>
+  <p id="p2-text"></p>
+  <button onclick="nextPage(3)">touch me 🤍</button>
+</div>
+
+<div class="page" id="page3">
+  <h1 id="p3-title"></h1>
+  <p id="p3-text"></p>
+  <button onclick="nextPage(4)">touch me 🤍</button>
+</div>
+
+<div class="page" id="page4">
+  <h1 id="p4-title"></h1>
+  <p id="p4-text"></p>
+</div>
+
+<script>
+// Name
+const name = "Sunshine";
+
+// Page texts
+const pages = {
+  1: { title: `Hey ${name} ☀️`, text: `  This is for you my babyyyyyyy 🤍\n i miss youuuu loterrrrr thangamyeee 🥰` },
+  2: { title: "Are you ready? 😌", text: `Before going to next page i wanna say something,\n you're my treasure. i'm happy to have you💙` },
+  3: { title: "Happy Birthday my SUNSHINE 🎉💙", text: `Today is your birthday day, my love 😌\n you make my life better ✨\n thankyou chellakuttyyyyyy🫶` },
+  4: { title: "for you marizzzzz🤍 ", text: `I love you more than words can describe 🥹\nMore than stars, more than waves 🌊\nToday, tomorrow, always…\n una batharama paathupen ngaa ...enakaga enkoodave irukurathuuku nandri \n ena aanalum ne venum 🤍 love yyou so much en bujju kuttyyyyyyyyy!!!!!🤍` }
+};
+
+// Typing effect
+function typeText(idTitle, idText, contentTitle, contentText, speed = 40) {
+  const titleEl = document.getElementById(idTitle);
+  const textEl = document.getElementById(idText);
+  titleEl.textContent = "";
+  textEl.textContent = "";
+  let i = 0;
+  function typeTitle() {
+    if (i < contentTitle.length) {
+      titleEl.textContent += contentTitle.charAt(i);
+      i++;
+      setTimeout(typeTitle, speed);
+    } else {
+      let j = 0;
+      function typeBody() {
+        if (j < contentText.length) {
+          textEl.textContent += contentText.charAt(j);
+          j++;
+          setTimeout(typeBody, speed);
+        }
+      }
+      typeBody();
+    }
+  }
+  typeTitle();
+}
+typeText("p1-title", "p1-text", pages[1].title, pages[1].text);
+
+// Page navigation
+function nextPage(num){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page'+num).classList.add('active');
+  typeText(`p${num}-title`, `p${num}-text`, pages[num].title, pages[num].text);
+}
+
+// Floating hearts full page (bottom → top)
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  const size = 12 + Math.random()*20;
+  heart.style.fontSize = size + 'px';
+  heart.style.left = Math.random() * window.innerWidth + 'px';
+  heart.style.bottom = '-30px'; // start below screen
+
+  const duration = 4 + Math.random()*3; // seconds
+  heart.style.transition = `transform ${duration}s linear, opacity ${duration}s linear`;
+  heart.textContent = '❤️';
+  document.getElementById('hearts').appendChild(heart);
+
+  // Animate heart from bottom to top
+  setTimeout(() => {
+    heart.style.transform = `translateY(-${window.innerHeight + 50}px)`;
+    heart.style.opacity = 0;
+  }, 50);
+
+  // Remove after animation
+  setTimeout(() => heart.remove(), duration*1000);
+}
+
+// Spawn hearts faster → full background
+setInterval(createHeart, 150);
+
+</script>
+
+</body>
+</html>
